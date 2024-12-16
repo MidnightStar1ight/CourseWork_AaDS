@@ -9,8 +9,8 @@ int main()
     
 	string path = "input.txt";
 	Graph graph(path);
-	graph.showAdj();
-    
+	graph.showAdjMatrix();
+    graph.showEdgeList();
     /*
     int numVertices = 6;
     vector<Edge> edges = {

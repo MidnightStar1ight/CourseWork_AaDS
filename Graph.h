@@ -6,6 +6,7 @@
 #include <list>
 #include <string>
 #include <algorithm>
+#include <iterator>
 
 using namespace std;
 
@@ -130,11 +131,12 @@ private:
         "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
         "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX"
     };
-    vector<list<int>> adjMatrix; // Матрица смежности
-    vector<list<int>> incMatrix; // Матрица инцидентности
+    vector<vector<int>> adjMatrix; // Матрица смежности
+    vector<vector<int>> incMatrix; // Матрица инцидентности (не сделано!)
+    vector<vector<int>> edgeList; // Список ребер
 	vector<string> vertNames;
-    list<int> parseString(string input) {
-        list<int> numbers;
+    vector<int> parseString(string input) {
+        vector<int> numbers;
         istringstream stream(input);
         int number;
 
@@ -145,14 +147,14 @@ private:
 
         return numbers;
     }
-    vector<list<int>> readFile(string path) {
+    vector<vector<int>> readFile(string path) {
         ifstream File(path);
-        vector<list<int>> adjMatrix;
+        vector<vector<int>> adjMatrix;
         if (File.is_open()) {
             while (!File.eof()) {
                 string line;
                 getline(File, line);
-                list<int> numbers = parseString(line);
+                vector<int> numbers = parseString(line);
                 adjMatrix.push_back(numbers);
                 //cout << line << endl;
             }
@@ -166,5 +168,6 @@ private:
 
 public:
 	Graph(string path);
-    void showAdj();
+    void showAdjMatrix();
+    void showEdgeList();
 };
