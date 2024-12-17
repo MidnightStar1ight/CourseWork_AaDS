@@ -17,7 +17,7 @@ private:
         "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
         "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX"
     };
-    vector<list<int>> adjList; // Списки смежности (не сделано!)
+    vector<list<int>> adjList; // Список смежности
     vector<vector<int>> adjMatrix; // Матрица смежности
     vector<vector<int>> incMatrix; // Матрица инцидентности (не сделано!)
     vector<Edge> edgeList; // Список ребер
@@ -52,7 +52,6 @@ private:
         }
         return adjMatrix;
     }
-    void createDSU(); // disjoint set union или система непересекающихся множеств
 
 public:
 	Graph(string path);

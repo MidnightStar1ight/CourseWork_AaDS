@@ -8,11 +8,6 @@ bool Graph::compareEdges(Edge edge1, Edge edge2)
 	return edge1.weight < edge2.weight;
 }
 
-void Graph::createDSU()
-{
-	
-}
-
 void Graph::findMinSpanningTree()
 {
 	/*
@@ -127,14 +122,14 @@ void Graph::findMinSpanningTree()
 	}
 	cout << "Суммарный вес: " << sum << endl;
 
-	vector<vector<int>> NewAdjMatrix(vertices, vector<int>(vertices - 1, 0));
+	vector<vector<int>> NewAdjMatrix(vertices+1, vector<int>(vertices, 0));
 	adjMatrix = NewAdjMatrix;
-
+	
 	for (Edge edge : minSpanningTree) {
-		adjMatrix[edge.left + 1][edge.right] = edge.weight; // Устанавливаем вес ребра
-		adjMatrix[edge.right + 1][edge.left] = edge.weight; // Для неориентированного графа
+		adjMatrix[edge.left + 1][edge.right] = edge.weight;
+		adjMatrix[edge.right + 1][edge.left] = edge.weight;
 	}
-
+	
 	adjList.clear();
 	int vert = 0;
 	bool isFirst = 1;
@@ -153,22 +148,36 @@ void Graph::findMinSpanningTree()
 		this->adjList.push_back(adjList);
 		vert++;
 	}
+
+	vector<vector<int>> incMatrix(vertices, vector<int>(edgeList.size(), 0));
+
+	for (size_t i = 0; i < edgeList.size(); ++i) {
+		const Edge& edge = edgeList[i];
+		incMatrix[edge.left][i] = edge.weight; // Вершина left инцидентна ребру i
+		incMatrix[edge.right][i] = edge.weight; // Вершина right инцидентна ребру i
+	}
+	this->incMatrix = incMatrix;
+
 	cout << "Данные обновлены" << endl;
 }
 
 void Graph::showIncMatrix()
 {
 	cout << "Матрица инцидентности:" << endl;
+
 	int letter = 0;
+	cout << "   ";
+	for (Edge let : edgeList) {
+		cout << letters[let.left] << letters[let.right] << " ";
+	}
+	cout << endl;
+
 	for (vector<int> i : incMatrix) {
-		//if (letter == -1) {
-		//	letter++;
-		//	continue;
-		//}
+
 		cout << letters[letter] << ": ";
 		for (int j : i) {
 			//if (!j) 
-			cout << j << " ";
+			cout << j << "  ";
 		}
 		cout << '\n';
 		letter++;
@@ -185,7 +194,7 @@ Graph::Graph(string path)
 {
 	vector<vector<int>> adjMatrixFile = readFile(path);
 	adjMatrix = adjMatrixFile;
-	vertices = adjMatrixFile.size();
+	vertices = adjMatrixFile.size()-1;
 	
 	bool isFirst = 1;
 	int vert = 0;
@@ -195,7 +204,7 @@ Graph::Graph(string path)
 			continue;
 		}
 		//vector<int> edge;
-		for (int i = vert+1; i < vertices-1; i++) {
+		for (int i = vert+1; i < vertices; i++) {
 			//cout << i;
 			Edge edge;
 			if (adjList[i]) {
@@ -227,14 +236,12 @@ Graph::Graph(string path)
 		vert++;
 	}
 
-	// Инициализация матрицы инцидентности нулями
-	vector<vector<int>> incMatrix(vertices-1, vector<int>(edgeList.size()-1, 0));
+	vector<vector<int>> incMatrix(vertices, vector<int>(edgeList.size(), 0));
 
-	// Заполнение матрицы инцидентности
-	for (size_t i = 0; i < edgeList.size()-1; ++i) {
+	for (size_t i = 0; i < edgeList.size(); ++i) {
 		const Edge& edge = edgeList[i];
-		incMatrix[edge.left][i] = 1; // Вершина left инцидентна ребру i
-		incMatrix[edge.right][i] = 1; // Вершина right инцидентна ребру i
+		incMatrix[edge.left][i] = edge.weight; // Вершина left инцидентна ребру i
+		incMatrix[edge.right][i] = edge.weight; // Вершина right инцидентна ребру i
 	}
 	this->incMatrix = incMatrix;
 }
@@ -246,13 +253,20 @@ void Graph::showAdjMatrix()
 	int letter = -1;
 	for (vector<int> i : adjMatrix) {
 		if (letter == -1) {
+
+			cout << "   ";
+			for (int let = 0; let < adjMatrix.size()-1; let++) {
+				cout << letters[let] << "  ";
+			}
+			cout << endl;
+
 			letter++;
 			continue;
 		}
 		cout << letters[letter] << ": ";
 		for (int j : i) {
 			//if (!j) 
-				cout << j << " ";
+				cout << j << "  ";
 		}
 		cout << '\n';
 		letter++;
