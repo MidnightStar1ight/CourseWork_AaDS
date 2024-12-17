@@ -11,6 +11,15 @@ int main()
 	Graph graph(path);
 	graph.showAdjMatrix();
     graph.showEdgeList();
+    graph.showAdjList();
+    graph.showIncMatrix();
+
+    graph.findMinSpanningTree();
+    graph.showAdjMatrix();
+    graph.showEdgeList();
+    graph.showAdjList();
+    
+    //graph.DFS();
     /*
     int numVertices = 6;
     vector<Edge> edges = {
