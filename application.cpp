@@ -49,7 +49,9 @@ void Application::exec()
             }
             case 6: {
                 system("cls");
-                cout << "Не готово!" << endl;
+                graph.DFS();
+                cout << endl;
+                graph.BFS();
                 break;
             }case 0: {
                 break;

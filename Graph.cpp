@@ -15,7 +15,7 @@ void Graph::findMinSpanningTree()
 	int numVertices = vertices;
 
 	// Сортировка ребер по весу
-	std::sort(edges.begin(), edges.end(), compareEdges);
+	sort(edges.begin(), edges.end(), compareEdges);
 
 	// Создание массива для хранения родителей вершин
 	vector<int> parent(numVertices, -1);
@@ -98,7 +98,7 @@ void Graph::findMinSpanningTree()
 	vector<Edge> edges = edgeList;
 	int numVertices = vertices;
 
-	std::sort(edges.begin(), edges.end(), compareEdges);
+	sort(edges.begin(), edges.end(), compareEdges);
 
 	DisjointSet dsu(vertices);
 	vector<Edge> minSpanningTree;
@@ -186,8 +186,60 @@ void Graph::showIncMatrix()
 
 void Graph::DFS()
 {
+	cout << "Обход в глубину: ";
+
 	vector<bool> visited(vertices, false);
-	DFS(vertices, visited);
+	stack<int> upcomingVertices;
+	DFS(0, visited, upcomingVertices);
+}
+
+void Graph::BFS()
+{
+	cout << "Обход в ширину: ";
+
+	BFS(0);
+}
+
+void Graph::DFS(int v, vector<bool>& visited, stack<int> upcomingVercites)
+{
+	int sum = 0;
+	for (int i : visited) sum += i;
+	if (sum == visited.size()) {
+		return;
+	}
+
+	visited[v] = true;
+	cout << letters[v] << " ";
+	for (int i : adjList[v]) {
+		if (!visited[i]) upcomingVercites.push(i);
+	}
+	if (upcomingVercites.empty()) return;
+	int newV = upcomingVercites.top();
+	upcomingVercites.pop();
+
+	DFS(newV, visited, upcomingVercites);
+}
+
+void Graph::BFS(int v)
+{
+	vector<bool> visited(vertices, false);
+	queue<int> q;
+
+	visited[v] = true;
+	q.push(v);
+
+	while (!q.empty()) {
+		int vert = q.front();
+		q.pop();
+		cout << letters[vert] << " ";
+
+		for (int i : adjList[vert]) {
+			if (!visited[i]) {
+				visited[i] = true;
+				q.push(i);
+			}
+		}
+	}
 }
 
 Graph::Graph(string path)

@@ -1,5 +1,7 @@
 #pragma once
 #include "dsu.h"
+#include <stack>
+#include <queue>
 
 using namespace std;
 
@@ -33,7 +35,7 @@ private:
         }
 
         return numbers;
-    }
+    }    
     vector<vector<int>> readFile(string path) {
         ifstream File(path);
         vector<vector<int>> adjMatrix;
@@ -52,7 +54,8 @@ private:
         }
         return adjMatrix;
     }
-
+    void DFS(int v, vector<bool>& visited, stack<int> upcomingVercites);
+    void BFS(int v);
 public:
 	Graph(string path);
     void showAdjMatrix();
@@ -61,15 +64,5 @@ public:
     void showIncMatrix();
     void findMinSpanningTree();
     void DFS();
-    void DFS(int v, vector<bool>& visited) {
-        visited[v] = true;
-        cout << v << " ";
-
-        vector<int>::iterator it;
-        for (it = adjMatrix[v].begin(); it != adjMatrix[v].end(); ++it) {
-            if (!visited[*it]) {
-                DFS(*it, visited);
-            }
-        }
-    }
+    void BFS();
 };
